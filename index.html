@@ -189,6 +189,17 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
 .note-hint { font-size: 12px; color: #7A5C10; background: var(--gold-light); border: 1px solid rgba(200,168,75,0.35); border-radius: 6px; padding: 8px 12px; margin-top: 10px; }
 #noteWrap textarea { width: 100%; margin-top: 10px; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; resize: vertical; outline: none; }
 #noteWrap textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(27,94,56,0.1); }
+.recent { margin-bottom: 18px; padding: 12px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; }
+.recent-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
+.recent-list { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.recent-list li { display: inline-flex; align-items: stretch; background: #fff; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; max-width: 100%; }
+.recent-list li:hover { border-color: var(--green-mid); }
+.recent-pick { background: none; border: 0; padding: 6px 4px 6px 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); cursor: pointer; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 340px; }
+.recent-pick span { color: var(--muted); font-size: 11px; margin-left: 6px; }
+.recent-del { background: none; border: 0; border-left: 1px solid var(--border); padding: 0 9px; font-size: 16px; color: var(--muted); cursor: pointer; }
+.recent-del:hover { color: #991B1B; background: #FEF2F2; }
+.recent-toggle { margin-top: 10px; font-size: 12px; font-weight: 400; color: var(--muted); }
+.recent-toggle input { width: 15px; height: 15px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -334,9 +345,17 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
 
   <div class="card">
     <div class="card-title">Resident details</div>
+    <div class="recent" id="recentWrap" hidden>
+      <div class="recent-head">
+        <span id="recentLabel">Recent addresses</span>
+        <button type="button" class="link-btn" onclick="clearRecent()">Clear all</button>
+      </div>
+      <ul class="recent-list" id="recentList" aria-labelledby="recentLabel"></ul>
+    </div>
     <div class="field">
       <label for="address">Address</label>
       <input type="text" id="address" placeholder="e.g. 14 High Street, Anytown, AB1 2CD">
+      <label class="check-row recent-toggle"><input type="checkbox" id="recentOn"> Remember the last 10 addresses and their dates on this computer</label>
     </div>
     <div class="date-range">
       <div class="field"><label for="startDate">From</label><input type="date" id="startDate"></div>
@@ -23509,6 +23528,10 @@ const STORAGE_CURRENT = 'abcg-settings-current-v1';
 const STORAGE_MANUAL  = 'abcg-settings-manual-v1';
 const STORAGE_STYLE   = 'abcg-doc-style-v1';
 const STORAGE_NOTE_ON = 'abcg-note-on-v1';
+const STORAGE_RECENT  = 'abcg-recent-v1';
+const STORAGE_RECENT_ON = 'abcg-recent-on-v1';
+const RECENT_MAX = 10;
+const RECENT_MAX_AGE_DAYS = 90;
 
 const FREQUENCIES = [
   {days: 7,  text: 'Every week'},
@@ -24439,6 +24462,120 @@ async function generatePlanner(prep, address) {
   return Packer.toBlob(doc);
 }
 
+
+/* ------------------------------------------------------------------
+ * Recent addresses: kept in this browser only, never sent anywhere
+ * ------------------------------------------------------------------ */
+function recentEnabled() { return storeGet(STORAGE_RECENT_ON) !== '0'; }
+
+function getRecent() {
+  let list = [];
+  try { list = JSON.parse(storeGet(STORAGE_RECENT)) || []; } catch (e) { list = []; }
+  const cutoff = Date.now() - RECENT_MAX_AGE_DAYS * 86400000;
+  const fresh = Array.isArray(list) ? list.filter(r => r && r.address && r.savedAt > cutoff) : [];
+  if (fresh.length !== list.length) storeSet(STORAGE_RECENT, JSON.stringify(fresh));
+  return fresh;
+}
+
+function saveRecent() {
+  if (!recentEnabled()) return;
+  const address = document.getElementById('address').value.trim();
+  if (!address) return;
+  const streams = {};
+  document.querySelectorAll('#streams input[data-bin]').forEach(i => { if (i.value) streams[i.dataset.bin] = i.value; });
+  const extras = Array.from(document.querySelectorAll('.extra-stream')).map(box => ({
+    key: box.querySelector('.extra-key').value,
+    interval: Number(box.querySelector('.extra-interval').value),
+    date: box.querySelector('.extra-date').value,
+  })).filter(x => x.date);
+  const exceptions = Array.from(document.querySelectorAll('.exception-row')).map(row => ({
+    date: row.querySelector('.exc-date').value,
+    mode: row.querySelector('.exc-mode').value,
+    bins: Array.from(row.querySelectorAll('.exc-bin:checked')).map(c => c.value),
+  })).filter(x => x.date);
+  const norm = address.toLowerCase().replace(/\s+/g, ' ');
+  const list = getRecent().filter(r => r.address.toLowerCase().replace(/\s+/g, ' ') !== norm);
+  list.unshift({address, base: config.base, savedAt: Date.now(), streams, extras, exceptions});
+  storeSet(STORAGE_RECENT, JSON.stringify(list.slice(0, RECENT_MAX)));
+  renderRecent();
+}
+
+function renderRecent() {
+  const wrap = document.getElementById('recentWrap');
+  const ul = document.getElementById('recentList');
+  const list = recentEnabled() ? getRecent() : [];
+  wrap.hidden = list.length === 0;
+  ul.innerHTML = '';
+  list.forEach((r, i) => {
+    const d = new Date(r.savedAt);
+    const when = d.toLocaleDateString('en-GB', {day: 'numeric', month: 'short'});
+    const li = document.createElement('li');
+    li.innerHTML = `<button type="button" class="recent-pick" title="${esc(r.address)}">${esc(r.address)}<span>${esc(when)}</span></button>` +
+      `<button type="button" class="recent-del" aria-label="Remove ${esc(r.address)} from recent addresses">&times;</button>`;
+    li.querySelector('.recent-pick').addEventListener('click', () => loadRecent(i));
+    li.querySelector('.recent-del').addEventListener('click', () => removeRecent(i));
+    ul.appendChild(li);
+  });
+}
+
+function removeRecent(i) {
+  const list = getRecent(); list.splice(i, 1);
+  storeSet(STORAGE_RECENT, JSON.stringify(list));
+  renderRecent();
+}
+
+function clearRecent() {
+  if (!confirm('Remove all recent addresses from this computer?')) return;
+  storeSet(STORAGE_RECENT, '[]');
+  renderRecent();
+  showStatus('Recent addresses cleared from this computer.', 'success');
+}
+
+function loadRecent(i) {
+  const r = getRecent()[i];
+  if (!r) return;
+  document.getElementById('address').value = r.address;
+  document.querySelectorAll('#streams input[data-bin]').forEach(inp => { inp.value = r.streams[inp.dataset.bin] || ''; });
+  document.getElementById('extra-streams').innerHTML = '';
+  (r.extras || []).filter(x => binById(x.key)).forEach(x => {
+    addExtraStream();
+    const box = document.querySelector('.extra-stream:last-child');
+    const sel = box.querySelector('.extra-key');
+    sel.value = x.key; sel.dispatchEvent(new Event('change'));
+    box.querySelector('.extra-interval').innerHTML = freqOptions(x.interval);
+    box.querySelector('.extra-date').value = x.date;
+  });
+  document.getElementById('exceptions-list').innerHTML = '';
+  (r.exceptions || []).forEach(x => {
+    addException();
+    const row = document.querySelector('.exception-row:last-child');
+    row.querySelector('.exc-date').value = x.date;
+    const mode = row.querySelector('.exc-mode');
+    mode.value = x.mode; mode.dispatchEvent(new Event('change'));
+    (x.bins || []).forEach(b => { const cb = row.querySelector(`.exc-bin[value="${CSS.escape(b)}"]`); if (cb) cb.checked = true; });
+  });
+  const skipped = Object.keys(r.streams || {}).filter(k => !binById(k)).length;
+  showStatus(`Loaded ${r.address}. Check the dates and exceptions are still right before downloading.` +
+    (skipped ? ` ${skipped} bin${skipped === 1 ? '' : 's'} from a different settings setup could not be filled in.` : ''), 'info');
+  document.getElementById('address').focus();
+}
+
+function wireRecent() {
+  const on = document.getElementById('recentOn');
+  on.checked = recentEnabled();
+  on.addEventListener('change', () => {
+    if (!on.checked) {
+      storeSet(STORAGE_RECENT_ON, '0');
+      storeSet(STORAGE_RECENT, '[]');
+      showStatus('Recent addresses switched off and cleared from this computer.', 'info');
+    } else {
+      storeSet(STORAGE_RECENT_ON, '1');
+    }
+    renderRecent();
+  });
+  renderRecent();
+}
+
 /* ------------------------------------------------------------------
  * Word document
  * ------------------------------------------------------------------ */
@@ -24458,6 +24595,7 @@ async function generate() {
       const blob = await generatePlanner(prep, address === '\u2014' ? '' : address);
       triggerDownload(blob, `${fileBase}-year-planner.docx`);
       showStatus('Year planner downloaded.', 'success');
+      saveRecent();
       btn.disabled = false;
       return true;
     } catch (e) {
@@ -24583,6 +24721,7 @@ async function generate() {
     const blob = await Packer.toBlob(doc);
     triggerDownload(blob, `${fileBase}.docx`);
     showStatus('Document downloaded.', 'success');
+    saveRecent();
     ok = true;
   } catch (e) {
     console.error(e); showStatus('Something went wrong: ' + e.message, 'error');
@@ -24664,6 +24803,7 @@ function generateICS() {
   const blob = new Blob([lines.map(icsFold).join('\r\n')], {type: 'text/calendar;charset=utf-8'});
   triggerDownload(blob, `bin-collections-${fileSlug(address === 'Your address' ? '' : address)}.ics`);
   showStatus('Calendar file downloaded. Open it to import into Google Calendar, Outlook or Apple Calendar.', 'success');
+  saveRecent();
   return true;
 }
 
@@ -24707,6 +24847,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   renderAll();
   wireOutputOptions();
+  wireRecent();
   toggleSetup(firstVisit);
   document.getElementById('howTo').open = firstVisit;
 });

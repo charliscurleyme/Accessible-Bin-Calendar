@@ -8,7 +8,16 @@ Staff enter a resident's address and their first collection date for each bin. T
 - **A year planner Word document** with the whole year on one A4 page and collection days marked with coloured circles. Days with more than one bin show a split circle.
 - **A calendar file (.ics)** that imports into Google Calendar, Outlook and Apple Calendar, with an optional reminder the day before.
 
-Everything runs in the browser. No resident data is sent anywhere or stored.
+Everything runs in the browser. No resident data is sent anywhere.
+
+## Recent addresses and privacy
+
+To save time on streets that come up again and again, the tool remembers the last 10 addresses you made a calendar for, along with their collection dates, extra collections and exceptions. Select one to fill the form back in.
+
+- This is stored in the browser on that computer only (browser local storage). It is never sent to GitHub or anywhere else.
+- Anyone using the same browser profile on that computer can see the list. On shared computers, consider switching it off.
+- Entries are removed automatically after 90 days. You can remove one address, clear them all, or untick **Remember the last 10 addresses** to switch the feature off and delete what is stored.
+- Organisations should check this fits their own data protection policies before use.
 
 ## Using it
 
