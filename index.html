@@ -23,8 +23,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .logo { display: flex; align-items: center; gap: 12px; }
 .logo-badge { width: 40px; height: 40px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .logo-text { color: #fff; line-height: 1.2; }
-.logo-text strong { display: block; font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; }
-.logo-text span { font-size: 11px; opacity: 0.7; letter-spacing: 0.05em; text-transform: uppercase; }
+.logo-text strong { display: block; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; }
+.logo-text span { font-size: 12px; opacity: 0.85; }
 .header-tag { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); font-size: 11px; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
 
 .hero { background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%); padding: 48px 24px 52px; position: relative; overflow: hidden; }
@@ -270,10 +270,9 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-      <div class="logo-badge" aria-hidden="true">&#127807;</div>
       <div class="logo-text">
-        <strong id="headerOrg">Accessible Bin Calendar</strong>
-        <span id="headerDept">Generator</span>
+        <strong>Accessible Bin Calendar</strong>
+        <span>by Charlis Curley</span>
       </div>
     </div>
     <div class="header-tag">Free and open source</div>
@@ -23799,10 +23798,7 @@ function toggleSetup(force) {
 }
 
 function applyGeneralText() {
-  document.getElementById('headerOrg').textContent = config.org || 'Accessible Bin Calendar';
-  document.getElementById('headerDept').textContent = config.dept || 'Generator';
   document.getElementById('lookupText').textContent = config.lookup || "your council's bin calendar";
-  document.title = 'Accessible Bin Calendar Generator' + (config.org ? ` | ${config.org}` : '');
 }
 
 function toggleSettings() {
