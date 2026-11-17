@@ -28,7 +28,7 @@ Use it online at https://charliscurleyme.github.io/Accessible-Bin-Calendar/ or d
 3. Enter the first collection date for each bin the resident has. Leave the others blank.
 4. If a bin is collected on more than one day, select **Add another collection**.
 5. Add any one-off exceptions, such as bank holiday changes.
-6. Choose **Large print** or **Year planner**, and tick **Add a note to every page** if you need one (for example about festive collections). The tool prompts you when the dates cover Christmas.
+6. Check the live preview on the right (on wide screens), which updates as you type and lets you step through the pages. Choose **Large print** or **Year planner**, and tick **Add a note to every page** if you need one (for example about festive collections). The tool prompts you when the dates cover Christmas.
 7. Download the Word document, the calendar file, or both.
 
 ## Setting it up for your council

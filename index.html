@@ -106,7 +106,7 @@ input.invalid { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1)
 .settings-grid .wide { grid-column: 1 / -1; }
 .settings-panel label { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
 .settings-panel input[type="text"], .settings-panel textarea, .settings-panel select, .settings-panel input[type="number"] { width: 100%; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); background: #fff; outline: none; }
-.settings-panel textarea { resize: vertical; min-height: 54px; line-height: 1.4; }
+.settings-panel textarea { resize: none; height: 54px; line-height: 1.4; }
 .settings-panel input:focus, .settings-panel textarea:focus, .settings-panel select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(27,94,56,0.1); }
 
 .bin-editor { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; background: #fff; }
@@ -161,9 +161,9 @@ details.how-to-card[open] > summary::before { transform: rotate(90deg); }
 details.how-to-card[open] > summary { margin-bottom: 20px; }
 
 /* Download card */
-.style-choice { border: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.style-choice { border: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
 .style-choice legend { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
-.style-opt { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: #fff; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 400; margin: 0; }
+.style-opt { display: flex; gap: 14px; align-items: flex-start; padding: 10px 12px; background: #fff; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 400; margin: 0; }
 .style-opt:hover { border-color: var(--green-mid); }
 .style-opt:has(input:checked) { border-color: var(--green); background: var(--green-light); box-shadow: inset 0 0 0 1px var(--green); }
 .style-opt:has(input:focus-visible) { outline: 3px solid var(--gold); outline-offset: 2px; }
@@ -204,12 +204,64 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
 
 .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .generate-btn.gen-ics { background: linear-gradient(135deg,#1a73e8,#1557b0); box-shadow: 0 4px 14px rgba(26,115,232,0.3); }
+.dl-label { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
 .both-btn { display: block; width: 100%; margin-top: 10px; padding: 12px; background: #fff; border: 1.5px solid var(--green); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--green); cursor: pointer; }
 .both-btn:hover { background: var(--green-light); }
 .both-btn:disabled { color: #999; border-color: #ccc; cursor: not-allowed; }
 
 @media (max-width: 580px) {
   .style-choice, .action-grid { grid-template-columns: 1fr; }
+}
+
+/* Workspace: two columns on wide screens */
+.workspace { display: block; }
+.preview { margin-bottom: 18px; }
+.preview-frame { position: relative; width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 210 / 297; background: #fff; border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden; }
+.preview-frame canvas { display: block; width: 100%; height: 100%; }
+.preview-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; font-size: 13px; color: var(--muted); background: repeating-linear-gradient(135deg, #fff 0 10px, #FAFAF7 10px 20px); }
+.preview-nav[hidden] { display: none; }
+.preview-nav { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.pv-btn { width: 32px; height: 32px; border: 1.5px solid var(--border); border-radius: 50%; background: #fff; font-size: 18px; line-height: 1; color: var(--text); cursor: pointer; }
+.pv-btn:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+.pv-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Large print mini page */
+.lp { position: absolute; top: 0; left: 0; width: 300px; height: 424px; transform-origin: 0 0; transform: scale(var(--lp-scale, 1)); padding: 17px 17px 12px; font-family: Arial, Helvetica, sans-serif; color: #000; display: flex; flex-direction: column; }
+.lp-month { font-size: 20px; font-weight: 700; line-height: 1.1; }
+.lp-addr { font-size: 7px; color: #555; margin: 3px 0 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lp-grid { display: grid; grid-template-columns: repeat(7, 1fr); border-left: 0.5px solid #000; border-top: 0.5px solid #000; }
+.lp-grid > div { border-right: 0.5px solid #ccc; border-bottom: 0.5px solid #ccc; min-height: 34px; text-align: center; padding: 2px 1px; overflow: hidden; }
+.lp-grid .lp-h { background: #000; color: #fff; font-size: 7px; font-weight: 700; min-height: 0; padding: 3px 0; border-color: #000; }
+.lp-grid .lp-blank { background: #EEE; }
+.lp-d { display: block; font-size: 11px; font-weight: 700; line-height: 1.2; }
+.lp-l { display: block; font-size: 4.6px; font-weight: 700; line-height: 1.15; }
+.lp-key-h { font-size: 8px; font-weight: 700; margin: 9px 0 4px; }
+.lp-key { display: grid; grid-template-columns: 30% 70%; border-top: 0.5px solid #000; border-left: 0.5px solid #000; }
+.lp-key > div { font-size: 5px; padding: 2.5px 4px; border-right: 0.5px solid #aaa; border-bottom: 0.5px solid #aaa; line-height: 1.2; }
+.lp-key .lp-k { font-weight: 700; }
+.lp-foot { margin-top: auto; text-align: center; font-size: 6px; line-height: 1.35; }
+.lp-foot strong { display: block; }
+
+@media (min-width: 1100px) {
+  .header-inner, .hero-inner, .main, .footer-inner { max-width: 1240px; }
+  .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 20px; align-items: start; }
+  .work-side { position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow-y: auto; }
+  .work-side .card { margin-bottom: 0; }
+  .work-side .card { padding: 22px 24px 18px; }
+  .work-side .card-title { margin-bottom: 14px; }
+  .work-side .style-choice legend { margin-bottom: 6px; }
+  .work-side .style-choice { margin-bottom: 12px; }
+  .work-side .preview { margin-bottom: 12px; }
+  .work-side .preview-nav { margin-top: 6px; }
+  .work-side .pv-btn { width: 28px; height: 28px; font-size: 16px; }
+  .work-side .preview-frame { max-width: 236px; }
+  .work-side .note-block { margin-bottom: 14px; }
+  .work-side #noteWrap textarea { font-size: 13px; padding: 8px 10px; }
+  .work-side .action-grid { gap: 8px; }
+  .work-side .generate-btn { padding: 12px 8px; font-size: 14px; margin-top: 0; box-shadow: none; }
+  .work-side .both-btn { margin-top: 8px; padding: 10px; }
+  .work-side .ics-note { font-size: 11px; margin-top: 8px !important; }
+  .streams-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
 </style>
 </head>
@@ -343,6 +395,9 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
     <p style="font-size:12px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid rgba(200,168,75,0.25);">The large print version can be printed at <strong>A3</strong> for residents who need even larger text. Select A3 in your printer settings and scale to fit.</p>
   </details>
 
+  <div class="workspace">
+  <div class="work-main">
+
   <div class="card">
     <div class="card-title">Resident details</div>
     <div class="recent" id="recentWrap" hidden>
@@ -383,21 +438,31 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
     <button type="button" onclick="addException()" class="exc-add-btn">+ Add exception date</button>
   </div>
 
-  <div class="card">
-    <div class="card-title">Download</div>
+  </div>
+
+  <aside class="work-side" aria-label="Preview and download">
+  <div class="card download-card">
+    <div class="card-title">Preview and download</div>
     <fieldset class="style-choice">
       <legend>Word document style</legend>
       <label class="style-opt">
         <input type="radio" name="docStyle" value="accessible" checked>
-        <span class="style-preview prev-access" aria-hidden="true"><i></i><i class="f1"></i><i></i><i class="f2"></i><i></i><i></i><i class="f3"></i><i></i></span>
-        <span class="style-text"><strong>Large print</strong><span>One month per page, filled day boxes, bin names printed in each box. For residents with visual impairments.</span></span>
+        <span class="style-text"><strong>Large print</strong><span>One month per page. For residents with visual impairments.</span></span>
       </label>
       <label class="style-opt">
         <input type="radio" name="docStyle" value="planner">
-        <span class="style-preview prev-planner" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b></span>
-        <span class="style-text"><strong>Year planner</strong><span>The whole year on one A4 page, collection days marked with coloured circles. Good for the fridge.</span></span>
+        <span class="style-text"><strong>Year planner</strong><span>The whole year on one page, coloured circles.</span></span>
       </label>
     </fieldset>
+
+    <div class="preview">
+      <div class="preview-frame" id="previewFrame" role="img" aria-label="Preview of the calendar page"></div>
+      <div class="preview-nav" id="previewNav" hidden>
+        <button type="button" class="pv-btn" id="pvPrev" aria-label="Previous page">&lsaquo;</button>
+        <span id="pvLabel" aria-live="polite"></span>
+        <button type="button" class="pv-btn" id="pvNext" aria-label="Next page">&rsaquo;</button>
+      </div>
+    </div>
 
     <div class="note-block">
       <label class="check-row"><input type="checkbox" id="noteOn"> Add a note to every page</label>
@@ -408,15 +473,18 @@ details.how-to-card[open] > summary { margin-bottom: 20px; }
       </div>
     </div>
 
-    <div class="action-grid">
-      <button type="button" class="generate-btn" id="genWord" onclick="generate()">Download Word document</button>
-      <button type="button" class="generate-btn gen-ics" id="genIcs" onclick="generateICS()">Download calendar file</button>
+    <p class="dl-label" id="dlLabel">Download</p>
+    <div class="action-grid" role="group" aria-labelledby="dlLabel">
+      <button type="button" class="generate-btn" id="genWord" onclick="generate()">Word document</button>
+      <button type="button" class="generate-btn gen-ics" id="genIcs" onclick="generateICS()">Calendar file</button>
     </div>
     <button type="button" class="both-btn" id="genBoth" onclick="generateBoth()">Download both</button>
-    <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">The calendar file (.ics) works with Google Calendar, Outlook and Apple Calendar.</p>
+    <p class="ics-note" style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">The calendar file (.ics) works with Google Calendar, Outlook and Apple Calendar.</p>
   </div>
 
   <div class="status" id="status" role="status" aria-live="polite"></div>
+  </aside>
+  </div>
 
 </main>
 
@@ -24059,6 +24127,7 @@ function renderBinDependants() {
 
 function renderAll() {
   document.getElementById('noteText').value = noteTextFor(config);
+  schedulePreview();
   applyGeneralText();
   updateModeStatus();
   renderGeneral();
@@ -24300,8 +24369,9 @@ function drawCollectionMark(c, x, y, r, keys) {
   return '#1A1A18';
 }
 
-function drawPlannerPage(o) {
-  const {W, H, scale} = PLANNER;
+function drawPlannerPage(o, scaleOverride) {
+  const {W, H} = PLANNER;
+  const scale = scaleOverride || PLANNER.scale;
   const cv = document.createElement('canvas');
   cv.width = Math.round(W * scale); cv.height = Math.round(H * scale);
   const c = cv.getContext('2d');
@@ -24576,6 +24646,126 @@ function wireRecent() {
   renderRecent();
 }
 
+
+/* ------------------------------------------------------------------
+ * Live preview
+ * ------------------------------------------------------------------ */
+let previewPage = 0;
+let previewTimer = null;
+
+function monthsBetween(rs, re) {
+  const out = [];
+  let cur = new Date(rs.getFullYear(), rs.getMonth(), 1);
+  const last = new Date(re.getFullYear(), re.getMonth(), 1);
+  while (cur <= last) { out.push({year: cur.getFullYear(), month: cur.getMonth()}); cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1); }
+  return out;
+}
+
+/* Same as prepare(), but silent: no status messages or field highlights. */
+function computeQuiet() {
+  const a = document.getElementById('startDate').value, b = document.getElementById('endDate').value;
+  if (!a || !b) return {err: 'Set a date range to see a preview.'};
+  const rangeStart = parseLocalDate(a), rangeEnd = parseLocalDate(b);
+  if (rangeStart > rangeEnd) return {err: 'The start date must be before the end date.'};
+  const streams = readStreams().filter(x => binById(x.key));
+  if (!streams.some(x => x.startDate)) return {err: 'Enter a first collection date to see a preview.'};
+  const schedule = buildSchedule(streams, rangeStart, rangeEnd);
+  applyExceptions(schedule, rangeStart, rangeEnd);
+  return {rangeStart, rangeEnd, schedule};
+}
+
+function schedulePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(renderPreview, 180);
+}
+
+function largePrintMiniHtml(year, month, schedule, keyBins, address, note) {
+  const ms = (schedule[year] && schedule[year][month]) || {};
+  const cells = DAYS.map(d => `<div class="lp-h">${d}</div>`);
+  getMonthCalendar(year, month).forEach(w => w.forEach(d => {
+    if (!d) { cells.push('<div class="lp-blank"></div>'); return; }
+    const v = ms[d];
+    if (!v) { cells.push(`<div><span class="lp-d">${d}</span></div>`); return; }
+    if (Array.isArray(v)) {
+      const fg = textOn(config.multiColour);
+      const labels = v.map(k => esc((binById(k) || {}).label || k).replace(/\n/g, ' ')).join(' &amp; ');
+      cells.push(`<div style="background:${config.multiColour};color:${fg}"><span class="lp-d">${d}</span><span class="lp-l">${v.length} ${esc(config.multiLabel || 'COLLECTIONS')}</span><span class="lp-l">${labels}</span></div>`);
+      return;
+    }
+    const b = binById(v) || {colour: '#888888', label: v};
+    cells.push(`<div style="background:${b.colour};color:${textOn(b.colour)}"><span class="lp-d">${d}</span>${String(b.label || b.name).split('\n').map(l => `<span class="lp-l">${esc(l)}</span>`).join('')}</div>`);
+  }));
+  const key = keyBins.map(b => `<div class="lp-k" style="background:${b.colour};color:${textOn(b.colour)}">${esc(String(b.label || b.name).replace(/\n/g, ' '))}</div><div>${esc(b.desc || b.name)}</div>`).join('');
+  const foot = (note ? `<strong>${esc(note)}</strong>` : '') + (config.footer && config.footer.trim() ? esc(config.footer.trim()) : '');
+  return `<div class="lp" aria-hidden="true">
+    <div class="lp-month">${MONTHS[month]} ${year}</div>
+    <div class="lp-addr">${esc(address || '—')}</div>
+    <div class="lp-grid">${cells.join('')}</div>
+    ${keyBins.length ? `<div class="lp-key-h">${esc(config.keyHeading || 'Collection key')}</div><div class="lp-key">${key}</div>` : ''}
+    ${foot ? `<div class="lp-foot">${foot}</div>` : ''}
+  </div>`;
+}
+
+function renderPreview() {
+  const frame = document.getElementById('previewFrame');
+  const nav = document.getElementById('previewNav');
+  if (!frame || !config) return;
+  const q = computeQuiet();
+  if (q.err) {
+    frame.innerHTML = `<div class="preview-empty">${esc(q.err)}</div>`;
+    frame.setAttribute('aria-label', 'Preview not available yet. ' + q.err);
+    nav.hidden = true;
+    return;
+  }
+  const {rangeStart, rangeEnd, schedule} = q;
+  const months = monthsBetween(rangeStart, rangeEnd);
+  const used = usedBinIds(schedule);
+  const keyBins = config.bins.filter(b => used.has(b.id));
+  const address = document.getElementById('address').value.trim();
+  const note = currentNote();
+  const planner = currentStyle() === 'planner';
+  const pages = planner ? Math.ceil(months.length / 12) : months.length;
+  previewPage = Math.max(0, Math.min(previewPage, pages - 1));
+
+  let label;
+  if (planner) {
+    const chunk = months.slice(previewPage * 12, previewPage * 12 + 12);
+    const period = chunk.length > 1 ? `${monthLabel(chunk[0])} to ${monthLabel(chunk[chunk.length - 1])}` : monthLabel(chunk[0]);
+    const hasMulti = Object.values(schedule).some(ms => Object.values(ms).some(days => Object.values(days).some(Array.isArray)));
+    const width = frame.clientWidth || 300;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const cv = drawPlannerPage({months: chunk, schedule, rangeStart, rangeEnd, address, period, keyBins, hasMulti, note}, (width * dpr) / PLANNER.W);
+    frame.innerHTML = '';
+    frame.appendChild(cv);
+    label = pages > 1 ? `${period}, page ${previewPage + 1} of ${pages}` : period;
+    frame.setAttribute('aria-label', `Preview of the year planner, ${period}`);
+  } else {
+    const m = months[previewPage];
+    frame.innerHTML = largePrintMiniHtml(m.year, m.month, schedule, keyBins, address, note);
+    frame.style.setProperty('--lp-scale', String((frame.clientWidth || 300) / 300));
+    label = `${monthLabel(m)}, page ${previewPage + 1} of ${pages}`;
+    frame.setAttribute('aria-label', `Preview of the large print page for ${monthLabel(m)}`);
+  }
+  nav.hidden = pages <= 1 && planner;
+  document.getElementById('pvLabel').textContent = label;
+  document.getElementById('pvPrev').disabled = previewPage === 0;
+  document.getElementById('pvNext').disabled = previewPage >= pages - 1;
+}
+
+function wirePreview() {
+  document.getElementById('pvPrev').addEventListener('click', () => { previewPage--; renderPreview(); });
+  document.getElementById('pvNext').addEventListener('click', () => { previewPage++; renderPreview(); });
+  document.querySelectorAll('input[name="docStyle"]').forEach(r => r.addEventListener('change', () => { previewPage = 0; renderPreview(); }));
+  ['startDate', 'endDate'].forEach(id => document.getElementById(id).addEventListener('change', () => { previewPage = 0; }));
+  // Any edit anywhere on the page refreshes the preview shortly afterwards
+  ['input', 'change'].forEach(ev => document.addEventListener(ev, e => { if (!e.target.closest('#previewNav')) schedulePreview(); }));
+  document.addEventListener('click', e => { if (e.target.closest('button') && !e.target.closest('#previewNav')) schedulePreview(); });
+  let lastW = 0;
+  window.addEventListener('resize', () => { const w = document.getElementById('previewFrame').clientWidth; if (w !== lastW) { lastW = w; schedulePreview(); } });
+  renderPreview();
+  loadPlannerFonts().then(renderPreview);
+}
+
 /* ------------------------------------------------------------------
  * Word document
  * ------------------------------------------------------------------ */
@@ -24848,6 +25038,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderAll();
   wireOutputOptions();
   wireRecent();
+  wirePreview();
   toggleSetup(firstVisit);
   document.getElementById('howTo').open = firstVisit;
 });
