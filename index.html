@@ -78,9 +78,9 @@ input.invalid { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1)
 .how-to-card::before { background: linear-gradient(90deg, var(--gold), var(--green)); }
 .how-to-card .card-title { color: #7A5C10; }
 
-.footer { background: var(--green); color: rgba(255,255,255,0.65); font-size: 13px; padding: 28px 24px; }
+.footer { background: var(--green); color: rgba(255,255,255,0.88); font-size: 13px; padding: 28px 24px; }
 .footer-inner { max-width: 960px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-.footer a { color: var(--gold); text-decoration: none; }
+.footer a { color: #F0DFA8; text-decoration: none; }
 .footer a:hover { text-decoration: underline; }
 
 @media (max-width: 580px) { .streams-grid, .date-range { grid-template-columns: 1fr; } .hero h1 { font-size: 26px; } .card { padding: 20px; } }
@@ -100,7 +100,7 @@ input.invalid { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1)
 
 .settings-panel { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
 .settings-panel.open { display: block; }
-.settings-panel h3 { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin: 4px 0 4px; }
+.settings-panel h2 { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin: 4px 0 4px; }
 .settings-panel .help { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
 .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin-bottom: 22px; }
 .settings-grid .wide { grid-column: 1 / -1; }
@@ -110,7 +110,8 @@ input.invalid { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1)
 .settings-panel input:focus, .settings-panel textarea:focus, .settings-panel select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(27,94,56,0.1); }
 
 .bin-editor { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px; background: #fff; }
-.bin-editor-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+.bin-editor-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 12px; }
+.bin-editor-head .bin-title { min-width: 140px; }
 .bin-swatch { width: 54px; height: 34px; border-radius: 4px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 8px; font-weight: 700; line-height: 1.1; flex-shrink: 0; white-space: pre-line; padding: 2px; }
 .bin-editor-head .bin-title { flex: 1; font-weight: 600; font-size: 14px; }
 .bin-editor-head .bin-sub { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
@@ -127,6 +128,7 @@ input.invalid { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1)
 
 .file-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border); }
 .ghost-btn { padding: 8px 14px; background: #fff; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text); }
+.exc-bins-wrap.is-void label { color: var(--muted); cursor: not-allowed; }
 .ghost-btn:hover { border-color: var(--green); color: var(--green); }
 
 /* Stream cards */
@@ -159,7 +161,7 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
   </div>
 </header>
 
-<div class="hero">
+<section class="hero" aria-label="About this tool">
   <div class="hero-inner">
     <h1>Accessible Bin Calendar Generator</h1>
     <p>Generates a large-print Word document for residents with visual impairments: one month per page, colour-coded, no icons. Also creates a calendar file for phones and email calendars.</p>
@@ -169,9 +171,9 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
       <span class="chip">Calendar file (.ics)</span>
     </div>
   </div>
-</div>
+</section>
 
-<div class="main">
+<main class="main">
 
   <div id="browser-warning" role="alert">
     <strong>&#9888; Open in Chrome or Edge to use this tool.</strong><br>
@@ -197,7 +199,7 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
     </div>
 
     <div class="settings-panel" id="settingsPanel">
-      <h3>General</h3>
+      <h2>General</h2>
       <p class="help">Changes save automatically in this browser.</p>
       <div class="settings-grid">
         <div>
@@ -242,7 +244,7 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
         </div>
       </div>
 
-      <h3>Bins</h3>
+      <h2>Bins</h2>
       <p class="help">The calendar label is what prints in each day's box. Put each line on its own line, and keep it short so it fits.</p>
       <div id="binEditors"></div>
       <button type="button" class="exc-add-btn" onclick="addBin()">+ Add a bin</button>
@@ -310,7 +312,7 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
   <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;">The calendar file (.ics) works with Google Calendar, Outlook and Apple Calendar.</p>
   <div class="status" id="status" role="status" aria-live="polite"></div>
 
-</div>
+</main>
 
 <footer class="footer">
   <div class="footer-inner">
@@ -23414,7 +23416,7 @@ var __async = (__this, __arguments, generator) => {
  * Set this to your GitHub repository URL to show a link in the footer.
  * Leave it empty to hide the link.
  * ------------------------------------------------------------------ */
-const REPO_URL = 'https://github.com/charliscurleyme/accessible-bin-calendar';
+const REPO_URL = 'https://github.com/charliscurleyme/Accessible-Bin-Calendar';
 
 const STORAGE_CURRENT = 'abcg-settings-current-v1';
 const STORAGE_MANUAL  = 'abcg-settings-manual-v1';
@@ -23661,35 +23663,35 @@ function binEditorHtml(bin, i) {
     </div>
     <div class="bin-editor-body">
       <div>
-        <label>Name on this screen</label>
-        <input type="text" data-f="name" value="${esc(bin.name)}">
+        <label for="be-${esc(bin.id)}-name">Name on this screen</label>
+        <input type="text" id="be-${esc(bin.id)}-name" data-f="name" value="${esc(bin.name)}">
       </div>
       <div>
-        <label>Colour</label>
+        <label for="be-${esc(bin.id)}-colour">Colour</label>
         <div class="colour-row">
-          <input type="color" data-f="colour" value="${bin.colour}">
+          <input type="color" id="be-${esc(bin.id)}-colour" data-f="colour" value="${bin.colour}">
           <span class="contrast-note${n.ok ? '' : ' warn'}">${esc(n.text)}</span>
         </div>
       </div>
       <div>
-        <label>Calendar label (one line per row)</label>
-        <textarea data-f="label" rows="2">${esc(bin.label)}</textarea>
+        <label for="be-${esc(bin.id)}-label">Calendar label (one line per row)</label>
+        <textarea id="be-${esc(bin.id)}-label" data-f="label" rows="2">${esc(bin.label)}</textarea>
       </div>
       <div>
-        <label>Calendar file event title</label>
-        <input type="text" data-f="event" value="${esc(bin.event)}">
+        <label for="be-${esc(bin.id)}-event">Calendar file event title</label>
+        <input type="text" id="be-${esc(bin.id)}-event" data-f="event" value="${esc(bin.event)}">
       </div>
       <div class="wide">
-        <label>Description in the key</label>
-        <input type="text" data-f="desc" value="${esc(bin.desc)}">
+        <label for="be-${esc(bin.id)}-desc">Description in the key</label>
+        <input type="text" id="be-${esc(bin.id)}-desc" data-f="desc" value="${esc(bin.desc)}">
       </div>
       <div>
-        <label>Usual frequency</label>
-        <select data-f="interval">${freqOptions(bin.interval)}</select>
+        <label for="be-${esc(bin.id)}-interval">Usual frequency</label>
+        <select id="be-${esc(bin.id)}-interval" data-f="interval">${freqOptions(bin.interval)}</select>
       </div>
       <div>
-        <label>Usual day (shown as a hint)</label>
-        <input type="text" data-f="day" value="${esc(bin.day)}" placeholder="e.g. Thursday">
+        <label for="be-${esc(bin.id)}-day">Usual day (shown as a hint)</label>
+        <input type="text" id="be-${esc(bin.id)}-day" data-f="day" value="${esc(bin.day)}" placeholder="e.g. Thursday">
       </div>
     </div>`;
 }
@@ -23860,10 +23862,10 @@ function refreshExtraStreams() {
 /* ------------------------------------------------------------------
  * Exceptions
  * ------------------------------------------------------------------ */
-function exceptionBinsHtml(checked) {
+function exceptionBinsHtml(checked, disabled) {
   return config.bins.map(b => `
     <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;font-weight:400;">
-      <input type="checkbox" class="exc-bin" value="${esc(b.id)}"${checked.includes(b.id) ? ' checked' : ''}> ${esc(b.name)}</label>`).join('');
+      <input type="checkbox" class="exc-bin" value="${esc(b.id)}"${checked.includes(b.id) ? ' checked' : ''}${disabled ? ' disabled' : ''}> ${esc(b.name)}</label>`).join('');
 }
 
 function addException() {
@@ -23886,9 +23888,9 @@ function addException() {
     <div style="flex:1 1 100%;margin:-4px 0 4px;">
       <span class="exc-hint" style="font-size:12px;color:var(--muted);font-style:italic;">No collection on this date. The day will appear blank on the calendar.</span>
     </div>
-    <div class="exc-bins-wrap" style="flex:1;min-width:220px;opacity:0.35;pointer-events:none;">
+    <div class="exc-bins-wrap is-void" style="flex:1;min-width:220px;">
       <span style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;font-weight:600;">Bin(s)</span>
-      <div class="exc-bins" style="display:flex;flex-wrap:wrap;gap:8px;">${exceptionBinsHtml([])}</div>
+      <div class="exc-bins" style="display:flex;flex-wrap:wrap;gap:8px;">${exceptionBinsHtml([], true)}</div>
     </div>
     <button type="button" class="extra-remove" aria-label="Remove this exception" style="margin-top:20px;">&times;</button>`;
   const select = row.querySelector('.exc-mode');
@@ -23901,8 +23903,9 @@ function addException() {
   };
   select.addEventListener('change', () => {
     const isVoid = select.value === 'void';
-    binsWrap.style.opacity = isVoid ? '0.35' : '1';
-    binsWrap.style.pointerEvents = isVoid ? 'none' : 'auto';
+    binsWrap.classList.toggle("is-void", isVoid);
+
+    binsWrap.querySelectorAll('.exc-bin').forEach(cb => { cb.disabled = isVoid; });
     hint.textContent = hints[select.value];
   });
   row.querySelector('.extra-remove').addEventListener('click', () => row.remove());
@@ -23913,7 +23916,7 @@ function addException() {
 function refreshExceptions() {
   document.querySelectorAll('.exception-row').forEach(row => {
     const checked = Array.from(row.querySelectorAll('.exc-bin:checked')).map(c => c.value);
-    row.querySelector('.exc-bins').innerHTML = exceptionBinsHtml(checked);
+    row.querySelector('.exc-bins').innerHTML = exceptionBinsHtml(checked, row.querySelector('.exc-mode').value === 'void');
   });
 }
 
@@ -24282,13 +24285,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   wireGeneral();
 
-  // ?preset=stirling in the address bar always opens with the standard Stirling settings
+  // ?preset=stirling in the address bar opens with Stirling settings, keeping any
+  // wording changes already made to them in this browser
   const params = new URLSearchParams(location.search);
   const presetParam = (params.get('preset') || '').toLowerCase();
   let saved = null;
   try { saved = JSON.parse(storeGet(STORAGE_CURRENT)); } catch (e) { saved = null; }
+  const savedOk = saved && validConfig(saved.config);
 
-  if (PRESETS[presetParam] && presetParam !== 'manual') {
+  if (PRESETS[presetParam] && presetParam !== 'manual' && !(savedOk && saved.config.base === presetParam)) {
     config = clone(PRESETS[presetParam]); modified = false;
   } else if (saved && validConfig(saved.config)) {
     config = saved.config; modified = !!saved.modified;

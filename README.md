@@ -11,7 +11,7 @@ Everything runs in the browser. No resident data is sent anywhere or stored.
 
 ## Using it
 
-Use it online at https://charliscurleyme.github.io/accessible-bin-calendar/ or download `index.html` and open it in Chrome or Edge.
+Use it online at https://charliscurleyme.github.io/Accessible-Bin-Calendar/ or download `index.html` and open it in Chrome or Edge.
 
 1. Choose your settings at the top: **Stirling Council** for Stirling's bins, or **Manual setup** to create your own.
 2. Enter the address and date range.
@@ -35,7 +35,7 @@ You can also set your organisation name, a footer for every page (for example a 
 
 Settings save automatically in your browser. To share a setup with colleagues, select **Save settings to a file** and send them the file. They can load it with **Load settings from a file**.
 
-Adding `?preset=stirling` to the address always opens the page with the standard Stirling Council settings, which is useful for a bookmark.
+Adding `?preset=stirling` to the address opens the page with the Stirling Council settings, which is useful for a team bookmark. Any wording changes already made in that browser are kept.
 
 ## Accessibility choices
 
