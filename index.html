@@ -144,6 +144,62 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
 @media (max-width: 580px) {
   .mode-switch, .settings-grid, .bin-editor.open .bin-editor-body { grid-template-columns: 1fr; }
 }
+
+/* Setup summary */
+.setup-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.setup-summary p { font-size: 14px; color: var(--text); }
+.setup-summary p span { color: var(--muted); }
+.setup-body { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+.setup-body[hidden] { display: none; }
+.setup-intro { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+/* How to use, collapsible */
+details.how-to-card > summary { cursor: pointer; list-style: none; margin-bottom: 0; }
+details.how-to-card > summary::-webkit-details-marker { display: none; }
+details.how-to-card > summary::before { content: '\25B8'; font-size: 12px; transition: transform 0.15s; }
+details.how-to-card[open] > summary::before { transform: rotate(90deg); }
+details.how-to-card[open] > summary { margin-bottom: 20px; }
+
+/* Download card */
+.style-choice { border: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.style-choice legend { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+.style-opt { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: #fff; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; font-weight: 400; margin: 0; }
+.style-opt:hover { border-color: var(--green-mid); }
+.style-opt:has(input:checked) { border-color: var(--green); background: var(--green-light); box-shadow: inset 0 0 0 1px var(--green); }
+.style-opt:has(input:focus-visible) { outline: 3px solid var(--gold); outline-offset: 2px; }
+.style-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.style-text strong { display: block; font-size: 14px; margin-bottom: 2px; }
+.style-text span { font-size: 12px; color: var(--muted); line-height: 1.45; display: block; }
+.style-preview { flex-shrink: 0; width: 58px; height: 72px; background: #fff; border: 1px solid var(--border); border-radius: 3px; padding: 6px; display: grid; gap: 3px; }
+.prev-access { grid-template-columns: repeat(4, 1fr); align-content: start; padding-top: 14px; position: relative; }
+.prev-access::before { content: ''; position: absolute; top: 5px; left: 6px; width: 28px; height: 5px; background: #1A1A18; border-radius: 1px; }
+.prev-access i { height: 10px; border: 1px solid #ccc; }
+.prev-access i.f1 { background: #6B3A2A; border-color: #6B3A2A; }
+.prev-access i.f2 { background: #1A4A8C; border-color: #1A4A8C; }
+.prev-access i.f3 { background: #2A2A2A; border-color: #2A2A2A; }
+.prev-planner { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; }
+.prev-planner b { border-radius: 2px; background:
+  radial-gradient(circle at 30% 40%, #6B3A2A 2px, transparent 2.5px),
+  radial-gradient(circle at 70% 70%, #1A4A8C 2px, transparent 2.5px),
+  repeating-linear-gradient(0deg, #eee 0 1px, transparent 1px 4px); }
+
+.note-block { margin-bottom: 20px; }
+.check-row { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; cursor: pointer; margin: 0; }
+.check-row input { width: 18px; height: 18px; accent-color: var(--green); }
+.note-hint { font-size: 12px; color: #7A5C10; background: var(--gold-light); border: 1px solid rgba(200,168,75,0.35); border-radius: 6px; padding: 8px 12px; margin-top: 10px; }
+#noteWrap textarea { width: 100%; margin-top: 10px; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; resize: vertical; outline: none; }
+#noteWrap textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(27,94,56,0.1); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.generate-btn.gen-ics { background: linear-gradient(135deg,#1a73e8,#1557b0); box-shadow: 0 4px 14px rgba(26,115,232,0.3); }
+.both-btn { display: block; width: 100%; margin-top: 10px; padding: 12px; background: #fff; border: 1.5px solid var(--green); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--green); cursor: pointer; }
+.both-btn:hover { background: var(--green-light); }
+.both-btn:disabled { color: #999; border-color: #ccc; cursor: not-allowed; }
+
+@media (max-width: 580px) {
+  .style-choice, .action-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -164,10 +220,10 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
 <section class="hero" aria-label="About this tool">
   <div class="hero-inner">
     <h1>Accessible Bin Calendar Generator</h1>
-    <p>Generates a large-print Word document for residents with visual impairments: one month per page, colour-coded, no icons. Also creates a calendar file for phones and email calendars.</p>
+    <p>Makes printable bin collection calendars in two styles: large print for residents with visual impairments, and a whole-year planner on one page. Also creates a calendar file for phones and email calendars.</p>
     <div class="hero-chips">
-      <span class="chip">Word document output</span>
-      <span class="chip">Large print</span>
+      <span class="chip">Large print Word document</span>
+      <span class="chip">Year planner</span>
       <span class="chip">Calendar file (.ics)</span>
     </div>
   </div>
@@ -181,93 +237,100 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
     Save the file, then open it directly in Chrome or Edge.
   </div>
 
-  <div class="card">
+  <div class="card setup-card">
     <div class="card-title">Council settings</div>
-    <div class="mode-switch" role="group" aria-label="Choose settings">
-      <button type="button" class="mode-btn" id="modeStirling" onclick="loadPreset('stirling')">
-        <strong>Stirling Council</strong>
-        <span>Stirling's bins, colours, frequencies and wording</span>
-      </button>
-      <button type="button" class="mode-btn" id="modeManual" onclick="loadManual()">
-        <strong>Manual setup</strong>
-        <span>Set up your own bins and wording</span>
-      </button>
+    <div class="setup-summary" id="setupSummary">
+      <p id="setupSummaryText"></p>
+      <button type="button" class="ghost-btn" id="setupToggle" onclick="toggleSetup()" aria-expanded="false" aria-controls="setupBody">Change settings</button>
     </div>
-    <p class="mode-status" id="modeStatus" aria-live="polite"></p>
-    <div class="settings-actions">
-      <button type="button" class="link-btn" id="toggleSettings" onclick="toggleSettings()" aria-expanded="false" aria-controls="settingsPanel">Edit bins and wording</button>
-    </div>
-
-    <div class="settings-panel" id="settingsPanel">
-      <h2>General</h2>
-      <p class="help">Changes save automatically in this browser.</p>
-      <div class="settings-grid">
-        <div>
-          <label for="cfgOrg">Organisation name</label>
-          <input type="text" id="cfgOrg" placeholder="e.g. Anytown Council">
-        </div>
-        <div>
-          <label for="cfgDept">Department</label>
-          <input type="text" id="cfgDept" placeholder="e.g. Waste Services">
-        </div>
-        <div class="wide">
-          <label for="cfgLookup">Where staff look up collection dates</label>
-          <input type="text" id="cfgLookup" placeholder="e.g. the online bin calendar">
-        </div>
-        <div class="wide">
-          <label for="cfgFooter">Footer on each page of the Word document (optional)</label>
-          <input type="text" id="cfgFooter" placeholder="e.g. Questions about your collections? Call 01234 567890">
-        </div>
-        <div>
-          <label for="cfgKeyHeading">Key heading</label>
-          <input type="text" id="cfgKeyHeading">
-        </div>
-        <div>
-          <label for="cfgMultiLabel">Label for days with more than one bin</label>
-          <input type="text" id="cfgMultiLabel">
-        </div>
-        <div>
-          <label for="cfgMultiColour">Colour for days with more than one bin</label>
-          <div class="colour-row">
-            <input type="color" id="cfgMultiColour">
-            <span class="contrast-note" id="cfgMultiNote"></span>
-          </div>
-        </div>
-        <div>
-          <label for="cfgReminder">Calendar reminder</label>
-          <select id="cfgReminder">
-            <option value="0">No reminder</option>
-            <option value="6">6 hours before (6pm the evening before)</option>
-            <option value="12">12 hours before (12 noon the day before)</option>
-            <option value="24">24 hours before (midnight two days before)</option>
-          </select>
-        </div>
+    <div class="setup-body" id="setupBody">
+      <p class="setup-intro">Choose once. Your choice and any changes are remembered in this browser.</p>
+      <div class="mode-switch" role="group" aria-label="Choose settings">
+        <button type="button" class="mode-btn" id="modeStirling" onclick="loadPreset('stirling')">
+          <strong>Stirling Council</strong>
+          <span>Stirling's bins, colours, frequencies and wording</span>
+        </button>
+        <button type="button" class="mode-btn" id="modeManual" onclick="loadManual()">
+          <strong>Manual setup</strong>
+          <span>For other councils and organisations: set up your own bins and wording</span>
+        </button>
+      </div>
+      <p class="mode-status" id="modeStatus" aria-live="polite"></p>
+      <div class="settings-actions">
+        <button type="button" class="link-btn" id="toggleSettings" onclick="toggleSettings()" aria-expanded="false" aria-controls="settingsPanel">Edit bins and wording</button>
       </div>
 
-      <h2>Bins</h2>
-      <p class="help">The calendar label is what prints in each day's box. Put each line on its own line, and keep it short so it fits.</p>
-      <div id="binEditors"></div>
-      <button type="button" class="exc-add-btn" onclick="addBin()">+ Add a bin</button>
+      <div class="settings-panel" id="settingsPanel">
+        <h2>General</h2>
+        <p class="help">Changes save automatically in this browser.</p>
+        <div class="settings-grid">
+          <div>
+            <label for="cfgOrg">Organisation name</label>
+            <input type="text" id="cfgOrg" placeholder="e.g. Anytown Council">
+          </div>
+          <div>
+            <label for="cfgDept">Department</label>
+            <input type="text" id="cfgDept" placeholder="e.g. Waste Services">
+          </div>
+          <div class="wide">
+            <label for="cfgLookup">Where staff look up collection dates</label>
+            <input type="text" id="cfgLookup" placeholder="e.g. the online bin calendar">
+          </div>
+          <div class="wide">
+            <label for="cfgFooter">Footer on each page (optional)</label>
+            <input type="text" id="cfgFooter" placeholder="e.g. Questions about your collections? Call 01234 567890">
+          </div>
+          <div>
+            <label for="cfgKeyHeading">Key heading</label>
+            <input type="text" id="cfgKeyHeading">
+          </div>
+          <div>
+            <label for="cfgMultiLabel">Large print: label for days with more than one bin</label>
+            <input type="text" id="cfgMultiLabel">
+          </div>
+          <div>
+            <label for="cfgMultiColour">Large print: colour for days with more than one bin</label>
+            <div class="colour-row">
+              <input type="color" id="cfgMultiColour">
+              <span class="contrast-note" id="cfgMultiNote"></span>
+            </div>
+          </div>
+          <div>
+            <label for="cfgReminder">Calendar file reminder</label>
+            <select id="cfgReminder">
+              <option value="0">No reminder</option>
+              <option value="6">6 hours before (6pm the evening before)</option>
+              <option value="12">12 hours before (12 noon the day before)</option>
+              <option value="24">24 hours before (midnight two days before)</option>
+            </select>
+          </div>
+        </div>
 
-      <div class="file-actions">
-        <button type="button" class="ghost-btn" onclick="exportSettings()">Save settings to a file</button>
-        <button type="button" class="ghost-btn" onclick="document.getElementById('importFile').click()">Load settings from a file</button>
-        <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importSettings(this)">
+        <h2>Bins</h2>
+        <p class="help">The calendar label is what prints in each day's box in the large print version. Put each line on its own line, and keep it short so it fits.</p>
+        <div id="binEditors"></div>
+        <button type="button" class="exc-add-btn" onclick="addBin()">+ Add a bin</button>
+
+        <div class="file-actions">
+          <button type="button" class="ghost-btn" onclick="exportSettings()">Save settings to a file</button>
+          <button type="button" class="ghost-btn" onclick="document.getElementById('importFile').click()">Load settings from a file</button>
+          <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importSettings(this)">
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="card how-to-card">
-    <div class="card-title">How to use</div>
+  <details class="card how-to-card" id="howTo">
+    <summary class="card-title">How to use</summary>
     <ol style="font-size:14px;color:var(--text);line-height:1.9;padding-left:20px;">
       <li>Enter the resident's address and the date range you want to cover.</li>
       <li>Look up their collection dates on <span id="lookupText">your council's bin calendar</span> and enter the first date for each bin.</li>
       <li>If a bin is collected on more than one day, use <strong>Add another collection</strong>.</li>
       <li>Add any one-off exceptions (for example bank holiday changes).</li>
-      <li>Select <strong>Generate Word document</strong> and the file downloads automatically.</li>
+      <li>Choose a style, add a note if you need one, and download.</li>
     </ol>
-    <p style="font-size:12px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid rgba(200,168,75,0.25);">The document can be printed at <strong>A3</strong> for residents who need even larger text. Select A3 in your printer settings and scale to fit.</p>
-  </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid rgba(200,168,75,0.25);">The large print version can be printed at <strong>A3</strong> for residents who need even larger text. Select A3 in your printer settings and scale to fit.</p>
+  </details>
 
   <div class="card">
     <div class="card-title">Resident details</div>
@@ -275,10 +338,6 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
       <label for="address">Address</label>
       <input type="text" id="address" placeholder="e.g. 14 High Street, Anytown, AB1 2CD">
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Date range</div>
     <div class="date-range">
       <div class="field"><label for="startDate">From</label><input type="date" id="startDate"></div>
       <div class="field"><label for="endDate">To</label><input type="date" id="endDate"></div>
@@ -305,11 +364,39 @@ button:focus-visible, select:focus-visible, input[type="color"]:focus-visible { 
     <button type="button" onclick="addException()" class="exc-add-btn">+ Add exception date</button>
   </div>
 
-  <div class="action-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
-    <button type="button" class="generate-btn" id="genWord" onclick="generate()">Generate Word document</button>
-    <button type="button" class="generate-btn" onclick="generateICS()" style="background:linear-gradient(135deg,#1a73e8,#1557b0);box-shadow:0 4px 14px rgba(26,115,232,0.3);">Generate calendar file</button>
+  <div class="card">
+    <div class="card-title">Download</div>
+    <fieldset class="style-choice">
+      <legend>Word document style</legend>
+      <label class="style-opt">
+        <input type="radio" name="docStyle" value="accessible" checked>
+        <span class="style-preview prev-access" aria-hidden="true"><i></i><i class="f1"></i><i></i><i class="f2"></i><i></i><i></i><i class="f3"></i><i></i></span>
+        <span class="style-text"><strong>Large print</strong><span>One month per page, filled day boxes, bin names printed in each box. For residents with visual impairments.</span></span>
+      </label>
+      <label class="style-opt">
+        <input type="radio" name="docStyle" value="planner">
+        <span class="style-preview prev-planner" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b></span>
+        <span class="style-text"><strong>Year planner</strong><span>The whole year on one A4 page, collection days marked with coloured circles. Good for the fridge.</span></span>
+      </label>
+    </fieldset>
+
+    <div class="note-block">
+      <label class="check-row"><input type="checkbox" id="noteOn"> Add a note to every page</label>
+      <p class="note-hint" id="xmasHint" hidden>This calendar covers Christmas. You may want to add a note about festive collections.</p>
+      <div id="noteWrap" hidden>
+        <label for="noteText" class="sr-only">Note text</label>
+        <textarea id="noteText" rows="2"></textarea>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <button type="button" class="generate-btn" id="genWord" onclick="generate()">Download Word document</button>
+      <button type="button" class="generate-btn gen-ics" id="genIcs" onclick="generateICS()">Download calendar file</button>
+    </div>
+    <button type="button" class="both-btn" id="genBoth" onclick="generateBoth()">Download both</button>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">The calendar file (.ics) works with Google Calendar, Outlook and Apple Calendar.</p>
   </div>
-  <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;">The calendar file (.ics) works with Google Calendar, Outlook and Apple Calendar.</p>
+
   <div class="status" id="status" role="status" aria-live="polite"></div>
 
 </main>
@@ -23420,6 +23507,8 @@ const REPO_URL = 'https://github.com/charliscurleyme/Accessible-Bin-Calendar';
 
 const STORAGE_CURRENT = 'abcg-settings-current-v1';
 const STORAGE_MANUAL  = 'abcg-settings-manual-v1';
+const STORAGE_STYLE   = 'abcg-doc-style-v1';
+const STORAGE_NOTE_ON = 'abcg-note-on-v1';
 
 const FREQUENCIES = [
   {days: 7,  text: 'Every week'},
@@ -23440,6 +23529,7 @@ const PRESETS = {
     dept: 'Waste Services',
     lookup: 'the Recollect calendar',
     footer: '',
+    noteText: 'Collections over Christmas and New Year may change. Check stirling.gov.uk for festive collection dates.',
     keyHeading: 'Collection key',
     multiLabel: 'COLLECTIONS',
     multiColour: '#CC7A00',
@@ -23465,6 +23555,7 @@ const PRESETS = {
     dept: '',
     lookup: '',
     footer: '',
+    noteText: "Collections over Christmas and New Year may change. Check your council's website for festive collection dates.",
     keyHeading: 'Collection key',
     multiLabel: 'COLLECTIONS',
     multiColour: '#CC7A00',
@@ -23598,6 +23689,22 @@ function updateModeStatus() {
   } else {
     el.innerHTML = `Using your own settings${config.org ? ` for <strong>${esc(config.org)}</strong>` : ''}.`;
   }
+  const sum = document.getElementById('setupSummaryText');
+  const n = config.bins.length;
+  if (isStirling) {
+    sum.innerHTML = `<strong>Stirling Council</strong> <span>${modified ? 'with your changes' : 'standard settings'}</span>`;
+  } else {
+    sum.innerHTML = `<strong>${esc(config.org || 'Your own settings')}</strong> <span>manual setup, ${n} bin${n === 1 ? '' : 's'}</span>`;
+  }
+}
+
+function toggleSetup(force) {
+  const body = document.getElementById('setupBody');
+  const open = typeof force === 'boolean' ? force : body.hidden;
+  body.hidden = !open;
+  const btn = document.getElementById('setupToggle');
+  btn.setAttribute('aria-expanded', String(open));
+  btn.textContent = open ? 'Done' : 'Change settings';
 }
 
 function applyGeneralText() {
@@ -23615,6 +23722,7 @@ function toggleSettings() {
   document.getElementById('toggleSettings').textContent = open ? 'Hide bins and wording' : 'Edit bins and wording';
 }
 function openSettings() {
+  toggleSetup(true);
   if (!document.getElementById('settingsPanel').classList.contains('open')) toggleSettings();
 }
 
@@ -23927,6 +24035,7 @@ function renderBinDependants() {
 }
 
 function renderAll() {
+  document.getElementById('noteText').value = noteTextFor(config);
   applyGeneralText();
   updateModeStatus();
   renderGeneral();
@@ -24054,14 +24163,309 @@ function fileSlug(address) {
   return address.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'calendar';
 }
 
+
+/* ------------------------------------------------------------------
+ * Output options: style and note
+ * ------------------------------------------------------------------ */
+function noteTextFor(c) {
+  if (typeof c.noteText === 'string') return c.noteText;
+  return (PRESETS[c.base] || PRESETS.manual).noteText;
+}
+function currentStyle() {
+  const r = document.querySelector('input[name="docStyle"]:checked');
+  return r ? r.value : 'accessible';
+}
+function currentNote() {
+  if (!document.getElementById('noteOn').checked) return '';
+  return document.getElementById('noteText').value.trim();
+}
+function rangeCoversChristmas() {
+  const a = document.getElementById('startDate').value, b = document.getElementById('endDate').value;
+  if (!a || !b) return false;
+  const s = parseLocalDate(a), e = parseLocalDate(b);
+  for (let y = s.getFullYear(); y <= e.getFullYear(); y++) {
+    const x = new Date(y, 11, 25);
+    if (x >= s && x <= e) return true;
+  }
+  return false;
+}
+function updateNoteUi() {
+  const on = document.getElementById('noteOn').checked;
+  document.getElementById('noteWrap').hidden = !on;
+  document.getElementById('xmasHint').hidden = on || !rangeCoversChristmas();
+}
+function wireOutputOptions() {
+  const savedStyle = storeGet(STORAGE_STYLE);
+  if (savedStyle === 'planner' || savedStyle === 'accessible') {
+    document.querySelector(`input[name="docStyle"][value="${savedStyle}"]`).checked = true;
+  }
+  document.querySelectorAll('input[name="docStyle"]').forEach(r => r.addEventListener('change', () => storeSet(STORAGE_STYLE, currentStyle())));
+  const noteOn = document.getElementById('noteOn');
+  noteOn.checked = storeGet(STORAGE_NOTE_ON) === '1';
+  noteOn.addEventListener('change', () => {
+    storeSet(STORAGE_NOTE_ON, noteOn.checked ? '1' : '0');
+    updateNoteUi();
+    if (noteOn.checked) document.getElementById('noteText').focus();
+  });
+  document.getElementById('noteText').addEventListener('input', e => { config.noteText = e.target.value; markChanged(); });
+  ['startDate', 'endDate'].forEach(id => document.getElementById(id).addEventListener('change', updateNoteUi));
+  updateNoteUi();
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function generateBoth() {
+  const both = document.getElementById('genBoth');
+  both.disabled = true;
+  const ok = await generate();
+  if (ok) {
+    // A short pause lets the browser register the first download before the second
+    await new Promise(r => setTimeout(r, 400));
+    if (generateICS()) showStatus('Word document and calendar file downloaded.', 'success');
+  }
+  both.disabled = false;
+}
+
+/* ------------------------------------------------------------------
+ * Year planner: whole year on one A4 page, drawn as a print-quality image
+ * ------------------------------------------------------------------ */
+const PLANNER = {W: 710, H: 1035, scale: 3.2}; // 710 x 1035 px at 96dpi fills A4 inside 1cm margins; drawn at about 300dpi
+const P_SANS = "'DM Sans', 'Segoe UI', Arial, sans-serif";
+const P_SERIF = "Fraunces, Georgia, 'Times New Roman', serif";
+
+async function loadPlannerFonts() {
+  if (!document.fonts || !document.fonts.load) return;
+  const loads = Promise.all([
+    document.fonts.load(`700 28px Fraunces`),
+    document.fonts.load(`400 12px 'DM Sans'`),
+    document.fonts.load(`600 12px 'DM Sans'`),
+  ]).catch(() => {});
+  await Promise.race([loads, new Promise(r => setTimeout(r, 2500))]);
+}
+
+function wrapText(c, text, maxW) {
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const out = []; let line = '';
+  words.forEach(w => {
+    const t = line ? line + ' ' + w : w;
+    if (c.measureText(t).width > maxW && line) { out.push(line); line = w; } else { line = t; }
+  });
+  if (line) out.push(line);
+  return out;
+}
+
+function drawCollectionMark(c, x, y, r, keys) {
+  const cols = keys.map(k => (binById(k) || {colour: '#888888'}).colour);
+  if (cols.length === 1) {
+    c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); c.fillStyle = cols[0]; c.fill();
+    if (contrast(cols[0], '#FFFFFF') < 1.6) { c.lineWidth = 0.8; c.strokeStyle = '#8C8A84'; c.stroke(); }
+    return textOn(cols[0]);
+  }
+  const step = Math.PI * 2 / cols.length;
+  cols.forEach((col, i) => {
+    c.beginPath(); c.moveTo(x, y);
+    c.arc(x, y, r, -Math.PI / 2 + i * step, -Math.PI / 2 + (i + 1) * step);
+    c.closePath(); c.fillStyle = col; c.fill();
+  });
+  c.beginPath(); c.arc(x, y, r * 0.6, 0, Math.PI * 2); c.fillStyle = '#FFFFFF'; c.fill();
+  return '#1A1A18';
+}
+
+function drawPlannerPage(o) {
+  const {W, H, scale} = PLANNER;
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(W * scale); cv.height = Math.round(H * scale);
+  const c = cv.getContext('2d');
+  c.scale(scale, scale);
+  const INK = '#1A1A18', MUTED = '#5F5F59', FAINT = '#C4C1BA', RULE = '#D9D6D0', WEEKEND = '#F4F3EF';
+  const M = 22;
+  const font = (size, weight, fam) => { c.font = `${weight || 400} ${size}px ${fam || P_SANS}`; };
+  c.fillStyle = '#FFFFFF'; c.fillRect(0, 0, W, H);
+  c.textBaseline = 'alphabetic';
+
+  // Header
+  let y = M + 8;
+  if (config.org) { font(10, 600); c.fillStyle = MUTED; c.textAlign = 'left'; c.fillText(config.org, M, y); }
+  y += 32;
+  font(28, 700, P_SERIF); c.fillStyle = INK; c.textAlign = 'left';
+  c.fillText('Bin collection calendar', M, y);
+  font(12.5, 600); c.textAlign = 'right'; c.fillText(o.period, W - M, y);
+  y += 20;
+  font(12); c.textAlign = 'left'; c.fillStyle = INK;
+  const addr = wrapText(c, o.address, W - 2 * M)[0] || '';
+  c.fillText(addr, M, y);
+  y += 12;
+  c.fillStyle = INK; c.fillRect(M, y, W - 2 * M, 1.4);
+  const gridTop = y + 16;
+
+  // Bottom stack, measured from the foot of the page upwards
+  let bottom = H - M;
+  if (config.footer && config.footer.trim()) {
+    font(9.5); c.fillStyle = MUTED; c.textAlign = 'center';
+    c.fillText(config.footer.trim(), W / 2, bottom);
+    bottom -= 18;
+  }
+  if (o.note) {
+    font(11, 600);
+    const lines = wrapText(c, o.note, W - 2 * M - 28);
+    const bh = lines.length * 15 + 16;
+    const top = bottom - bh;
+    c.fillStyle = '#FBF6E9'; c.strokeStyle = '#E3D3A3'; c.lineWidth = 1;
+    c.beginPath(); c.roundRect ? c.roundRect(M, top, W - 2 * M, bh, 6) : c.rect(M, top, W - 2 * M, bh); c.fill(); c.stroke();
+    c.fillStyle = INK; c.textAlign = 'left';
+    lines.forEach((l, i) => c.fillText(l, M + 14, top + 20 + i * 15));
+    bottom = top - 12;
+  }
+  // Key
+  const items = o.keyBins.map(b => ({keys: [b.id], name: b.name, desc: b.desc && b.desc !== b.name ? b.desc : ''}));
+  if (o.hasMulti && items.length > 1) items.push({keys: o.keyBins.slice(0, 2).map(b => b.id), name: 'More than one bin', desc: 'Split circle: put out each bin shown'});
+  if (items.length) {
+    const colW = (W - 2 * M - 20) / 2;
+    font(9.5);
+    const laid = items.map(it => ({...it, lines: it.desc ? wrapText(c, it.desc, colW - 26).slice(0, 2) : []}));
+    const rows = [];
+    for (let i = 0; i < laid.length; i += 2) {
+      const pair = laid.slice(i, i + 2);
+      rows.push({pair, h: 16 + Math.max(...pair.map(p => p.lines.length)) * 12 + 6});
+    }
+    const keyH = 22 + rows.reduce((a, r) => a + r.h, 0);
+    let ky = bottom - keyH;
+    c.fillStyle = RULE; c.fillRect(M, ky - 10, W - 2 * M, 1);
+    font(12, 700); c.fillStyle = INK; c.textAlign = 'left';
+    c.fillText(config.keyHeading || 'Collection key', M, ky + 8);
+    ky += 22;
+    rows.forEach(r => {
+      r.pair.forEach((it, j) => {
+        const x = M + j * (colW + 20);
+        drawCollectionMark(c, x + 8, ky + 6, 7.5, it.keys);
+        font(11, 600); c.fillStyle = INK; c.textAlign = 'left';
+        c.fillText(it.name, x + 24, ky + 10);
+        font(9.5); c.fillStyle = MUTED;
+        it.lines.forEach((l, k) => c.fillText(l, x + 24, ky + 23 + k * 12));
+      });
+      ky += r.h;
+    });
+    bottom = bottom - keyH - 22;
+  }
+
+  // Month grid: 3 columns by 4 rows
+  const gapX = 20, gapY = 12;
+  const cw = (W - 2 * M - 2 * gapX) / 3;
+  const ch = (bottom - gridTop - 3 * gapY) / 4;
+  const dayW = cw / 7;
+  const head = 30;
+  const rowH = Math.min((ch - head) / 6, dayW * 1.05);
+  const r = Math.min(dayW, rowH) / 2 - 1.2;
+  const WD = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  o.months.forEach(({year, month}, i) => {
+    const gx = M + (i % 3) * (cw + gapX);
+    const gy = gridTop + Math.floor(i / 3) * (ch + gapY);
+    font(13, 700); c.fillStyle = INK; c.textAlign = 'left';
+    c.fillText(MONTHS[month], gx + 2, gy + 12);
+    const mw = c.measureText(MONTHS[month]).width;
+    font(11); c.fillStyle = MUTED; c.fillText(String(year), gx + 2 + mw + 5, gy + 12);
+    // Weekend band
+    c.fillStyle = WEEKEND;
+    c.fillRect(gx + 5 * dayW, gy + 17, 2 * dayW, head - 17 + 6 * rowH);
+    font(8.5, 600); c.fillStyle = MUTED; c.textAlign = 'center'; c.textBaseline = 'middle';
+    WD.forEach((d, k) => c.fillText(d, gx + k * dayW + dayW / 2, gy + 23));
+    const weeks = getMonthCalendar(year, month);
+    const ms = (o.schedule[year] && o.schedule[year][month]) || {};
+    weeks.forEach((w, wi) => {
+      w.forEach((d, k) => {
+        if (!d) return;
+        const cx = gx + k * dayW + dayW / 2;
+        const cy = gy + head + wi * rowH + rowH / 2;
+        const date = new Date(year, month, d);
+        const inRange = date >= o.rangeStart && date <= o.rangeEnd;
+        const v = ms[d];
+        let colour = inRange ? INK : FAINT, weight = 400, size = 9.5;
+        if (v && inRange) {
+          colour = drawCollectionMark(c, cx, cy, r, Array.isArray(v) ? v : [v]);
+          weight = 700; if (Array.isArray(v)) size = 8.5;
+        }
+        font(size, weight); c.fillStyle = colour;
+        c.fillText(String(d), cx, cy + 0.5);
+      });
+    });
+    c.textBaseline = 'alphabetic';
+  });
+  return cv;
+}
+
+async function canvasToPng(cv) {
+  const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+  return new Uint8Array(await blob.arrayBuffer());
+}
+
+function monthLabel(m) { return `${MONTHS[m.month]} ${m.year}`; }
+
+async function generatePlanner(prep, address) {
+  const {rangeStart, rangeEnd, schedule} = prep;
+  const months = [];
+  let cur = new Date(rangeStart.getFullYear(), rangeStart.getMonth(), 1);
+  const last = new Date(rangeEnd.getFullYear(), rangeEnd.getMonth(), 1);
+  while (cur <= last) { months.push({year: cur.getFullYear(), month: cur.getMonth()}); cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1); }
+  const used = usedBinIds(schedule);
+  const keyBins = config.bins.filter(b => used.has(b.id));
+  const hasMulti = Object.values(schedule).some(ms => Object.values(ms).some(days => Object.values(days).some(Array.isArray)));
+  const note = currentNote();
+  await loadPlannerFonts();
+
+  const {Document, Packer, Paragraph, ImageRun, AlignmentType} = docx;
+  const children = [];
+  for (let i = 0; i < months.length; i += 12) {
+    const chunk = months.slice(i, i + 12);
+    const period = chunk.length > 1 ? `${monthLabel(chunk[0])} to ${monthLabel(chunk[chunk.length - 1])}` : monthLabel(chunk[0]);
+    const cv = drawPlannerPage({months: chunk, schedule, rangeStart, rangeEnd, address, period, keyBins, hasMulti, note});
+    const png = await canvasToPng(cv);
+    children.push(new Paragraph({
+      pageBreakBefore: i > 0, alignment: AlignmentType.CENTER, spacing: {before: 0, after: 0},
+      children: [new ImageRun({type: 'png', data: png, transformation: {width: PLANNER.W, height: PLANNER.H},
+        altText: {name: 'Bin collection calendar', title: `Bin collection calendar, ${period}`,
+          description: `Year planner of bin collections for ${address}, ${period}. A large print version is available.`}})],
+    }));
+  }
+  const doc = new Document({sections: [{properties: {page: {
+    size: {width: 11906, height: 16838}, margin: {top: 567, right: 567, bottom: 567, left: 567, header: 0, footer: 0},
+  }}, children}]});
+  return Packer.toBlob(doc);
+}
+
 /* ------------------------------------------------------------------
  * Word document
  * ------------------------------------------------------------------ */
 async function generate() {
   const prep = prepare();
-  if (!prep) return;
+  if (!prep) return false;
   const {rangeStart, rangeEnd, schedule} = prep;
   const address = document.getElementById('address').value.trim() || '\u2014';
+  const note = currentNote();
+  const btn = document.getElementById('genWord');
+  const fileBase = `bin-calendar-${fileSlug(address === '\u2014' ? '' : address)}`;
+
+  if (currentStyle() === 'planner') {
+    showStatus('Generating year planner\u2026', 'info');
+    btn.disabled = true;
+    try {
+      const blob = await generatePlanner(prep, address === '\u2014' ? '' : address);
+      triggerDownload(blob, `${fileBase}-year-planner.docx`);
+      showStatus('Year planner downloaded.', 'success');
+      btn.disabled = false;
+      return true;
+    } catch (e) {
+      console.error(e); showStatus('Something went wrong: ' + e.message, 'error');
+      btn.disabled = false;
+      return false;
+    }
+  }
 
   // Colours and wording for each bin, from the current settings
   const BIN = {};
@@ -24073,9 +24477,9 @@ async function generate() {
   const used = usedBinIds(schedule);
   const keyBins = config.bins.filter(b => used.has(b.id));
 
-  const btn = document.getElementById('genWord');
   showStatus('Generating document\u2026', 'info');
   btn.disabled = true;
+  let ok = false;
 
   try {
     const {Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, Footer,
@@ -24168,22 +24572,23 @@ async function generate() {
     const section = {properties: {page: {
       size: {width: 11906, height: 16838}, margin: {top: 851, right: 851, bottom: 851, left: 851},
     }}, children};
-    if (config.footer && config.footer.trim()) {
-      section.footers = {default: new Footer({children: [new Paragraph({alignment: AlignmentType.CENTER,
-        children: [new TextRun({text: config.footer.trim(), size: 24, font: 'Arial', color: '000000'})]})]})};
-    }
+    const footerParas = [];
+    if (note) footerParas.push(new Paragraph({alignment: AlignmentType.CENTER, spacing: {after: 60},
+      children: [new TextRun({text: note, bold: true, size: 24, font: 'Arial', color: '000000'})]}));
+    if (config.footer && config.footer.trim()) footerParas.push(new Paragraph({alignment: AlignmentType.CENTER,
+      children: [new TextRun({text: config.footer.trim(), size: 24, font: 'Arial', color: '000000'})]}));
+    if (footerParas.length) section.footers = {default: new Footer({children: footerParas})};
 
     const doc = new Document({sections: [section]});
     const blob = await Packer.toBlob(doc);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `bin-calendar-${fileSlug(address === '\u2014' ? '' : address)}.docx`;
-    a.click(); URL.revokeObjectURL(url);
+    triggerDownload(blob, `${fileBase}.docx`);
     showStatus('Document downloaded.', 'success');
+    ok = true;
   } catch (e) {
     console.error(e); showStatus('Something went wrong: ' + e.message, 'error');
   }
   btn.disabled = false;
+  return ok;
 }
 
 /* ------------------------------------------------------------------
@@ -24202,7 +24607,7 @@ function icsFold(line) {
 
 function generateICS() {
   const prep = prepare();
-  if (!prep) return;
+  if (!prep) return false;
   const {schedule} = prep;
   const address = document.getElementById('address').value.trim() || 'Your address';
 
@@ -24257,13 +24662,9 @@ function generateICS() {
   lines.push('END:VCALENDAR');
 
   const blob = new Blob([lines.map(icsFold).join('\r\n')], {type: 'text/calendar;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `bin-collections-${fileSlug(address === 'Your address' ? '' : address)}.ics`;
-  a.click();
-  URL.revokeObjectURL(url);
+  triggerDownload(blob, `bin-collections-${fileSlug(address === 'Your address' ? '' : address)}.ics`);
   showStatus('Calendar file downloaded. Open it to import into Google Calendar, Outlook or Apple Calendar.', 'success');
+  return true;
 }
 
 /* ------------------------------------------------------------------
@@ -24293,14 +24694,21 @@ window.addEventListener('DOMContentLoaded', () => {
   try { saved = JSON.parse(storeGet(STORAGE_CURRENT)); } catch (e) { saved = null; }
   const savedOk = saved && validConfig(saved.config);
 
+  // First visit: open the setup choice and the how-to; afterwards keep both tucked away
+  const firstVisit = !savedOk && !PRESETS[presetParam];
+
   if (PRESETS[presetParam] && presetParam !== 'manual' && !(savedOk && saved.config.base === presetParam)) {
     config = clone(PRESETS[presetParam]); modified = false;
-  } else if (saved && validConfig(saved.config)) {
+    saveConfig();
+  } else if (savedOk) {
     config = saved.config; modified = !!saved.modified;
   } else {
     config = clone(PRESETS.manual); modified = false;
   }
   renderAll();
+  wireOutputOptions();
+  toggleSetup(firstVisit);
+  document.getElementById('howTo').open = firstVisit;
 });
 </script>
 </body>

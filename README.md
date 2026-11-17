@@ -1,10 +1,11 @@
 # Accessible Bin Calendar Generator
 
-A free, single-page tool for creating large-print, colour-coded bin collection calendars for residents with visual impairments.
+A free, single-page tool for creating printable bin collection calendars, including a large-print version for residents with visual impairments.
 
 Staff enter a resident's address and their first collection date for each bin. The tool works out the rest of the year and produces:
 
-- **A Word document** with one month per A4 page, large bold dates, each collection day filled in the bin's colour, and a key on every page. It can be printed at A3 for residents who need even larger text.
+- **A large print Word document** with one month per A4 page, large bold dates, each collection day filled in the bin's colour with the bin's name printed in the box, and a key on every page. It can be printed at A3 for residents who need even larger text.
+- **A year planner Word document** with the whole year on one A4 page and collection days marked with coloured circles. Days with more than one bin show a split circle.
 - **A calendar file (.ics)** that imports into Google Calendar, Outlook and Apple Calendar, with an optional reminder the day before.
 
 Everything runs in the browser. No resident data is sent anywhere or stored.
@@ -13,12 +14,13 @@ Everything runs in the browser. No resident data is sent anywhere or stored.
 
 Use it online at https://charliscurleyme.github.io/Accessible-Bin-Calendar/ or download `index.html` and open it in Chrome or Edge.
 
-1. Choose your settings at the top: **Stirling Council** for Stirling's bins, or **Manual setup** to create your own.
+1. The first time, choose your settings: **Stirling Council** for Stirling's bins, or **Manual setup** for other councils and organisations. This is remembered, and afterwards shows as a single line you can change.
 2. Enter the address and date range.
 3. Enter the first collection date for each bin the resident has. Leave the others blank.
 4. If a bin is collected on more than one day, select **Add another collection**.
 5. Add any one-off exceptions, such as bank holiday changes.
-6. Generate the Word document, the calendar file, or both.
+6. Choose **Large print** or **Year planner**, and tick **Add a note to every page** if you need one (for example about festive collections). The tool prompts you when the dates cover Christmas.
+7. Download the Word document, the calendar file, or both.
 
 ## Setting it up for your council
 
@@ -43,6 +45,7 @@ Adding `?preset=stirling` to the address opens the page with the Stirling Counci
 - Collection days are filled with a solid colour rather than relying on icons.
 - Each bin's name is printed in the day box, so colour is never the only cue.
 - Days with more than one collection use a distinct colour and list each bin.
+- The year planner is a design-led alternative for general use. It is drawn as a high-resolution image, so it prints crisply but is not suited to screen readers; use the large print version where accessibility matters.
 - The key only lists bins the resident actually has.
 
 ## Hosting on GitHub Pages
